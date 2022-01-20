@@ -7,13 +7,13 @@ class My_git:
     def __init__(self,path,user,email):
         global repo
 
-        try:
+        try:#Comprobamos is existe un repositorio creado
             repo = Repo(path)
             comand1 = ("git config --global user.name \"{}\"".format(user))
             comand2 = ("git config --global user.email \"{}\"").format(email)
             os.system(comand1)
             os.system(comand2)
-        except:
+        except:#Si no existe preguntamos si lo inicializamos, si responde si lo hacemos si responde no no hacemos nada
             valor = messagebox.askquestion("New Repo", "No existe repositorio en esta ruta, desea crear uno nuevo?")
             if valor == "yes":
                 Repo.init(path)
@@ -21,18 +21,28 @@ class My_git:
 
     def commit_add(self,comentario):
 
-        try:
+        try:#intentamos hacer el commit, es necesario avisar al usuario en caso de que se dejase la entrada del comentario vacia
             repo.git.add(all=True)
             repo.git.commit('-m', comentario)
         except:
-            messagebox.showwarning("warning", "Ningun cambio a comitear\n o error en la ruta")
+            messagebox.showwarning("warning", "Ningun cambio a comitear\n Vuelve a seleccionar la carpeta")
 
-    def checkout_commit(self,commit_id):
+    def checkout_commit(self,commit_id):#volver a un commit seleccionamos
         repo.git.checkout(commit_id)
     def push_github(self,destino):
 
-        origin = repo.create_remote('origin', destino)
-        repo.git.push("--set-upstream", origin, repo.head.ref)
+        try:#Creamos un repositio remoto, hay que darle la opcion de seleccionarlo de la lista o crear uno nuevo, por ahora solo trabaja en mi repositorio
+            origin = repo.create_remote('origin', destino)
+            repo.git.push("--set-upstream", origin, repo.head.ref)
+        except:
+            repo.remotes.origin.push()
+
+
+            #En un futuro mostrar los remotes creados para poder seleccionarlos
+            #print('Remotes:')
+            #for remote in repo.remotes:
+            #    print(f'- {remote.name} {remote.url}')
+
     def show_commits(self):
         commits = list(repo.iter_commits('master'))
         return commits

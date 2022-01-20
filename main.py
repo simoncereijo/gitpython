@@ -1,5 +1,6 @@
 from aplicacion import Aplicacion
 
-app=Aplicacion()
+app = Aplicacion()
 
 app.mainloop()
+

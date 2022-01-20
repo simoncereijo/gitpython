@@ -1,10 +1,19 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter import font
-from tkinter import messagebox
-
-import os as os
 from clase_git import My_git
+
+#Aplicacion para el uso de Git sin tener que utilizar la consola.
+#En las entradas de "User" y "Email" configuras la pesrona que ha hecho las modificaciones en el repositorio
+#Puedes validar un comit metiendo el comentario y pulsado validar
+#puedes recuperar un commit seleccionandolo de la lista de commits y pulsando checkout
+#Para generar la lista de commit debes estar dentro de una ruta con un repositorio creado y pulsar reflog
+#si quieres sibir el repositio a github puedes introducir la url y pulsar subir a github
+
+#Errores:
+#-Cuando creo un repositio nuevo, tengo que volver a seleccionar la ruta para poder hacer commit
+#-a la hora de subir a github, esta pendiente mostrar la lista de repositioros remotos creados para poder Seleccionar/borrar/crear
+
 
 class Aplicacion(Tk):
 
@@ -17,15 +26,15 @@ class Aplicacion(Tk):
         self.resizable(0,0)
         self.frame_izquierdo()
         self.frame_derecho()
-    def open_directory(self):
+    def open_directory(self):#Seleccion de la ruta de nuestro repositorio local
         filepath = filedialog.askdirectory()
         return filepath
-    def crear_label_directorio(self,frame,user,email):
+    def crear_label_directorio(self,frame,user,email):#Creamos un texto mostrando la ruta seleccionado y creamos o seleccionamos el repositorio
         filepath = filedialog.askdirectory()
         label_directorio=Label(frame,text=filepath,width=40)
         label_directorio.grid(row=3,column=1)
         self.repo=My_git(filepath,user,email)
-    def checkout_versio(self):
+    def checkout_versio(self):#recumeramos el comit seleccionado de la lista
         elemento_selecciondo=self.listbox.curselection()
         elemento_selecciondo=elemento_selecciondo[0]
         try:
@@ -33,7 +42,7 @@ class Aplicacion(Tk):
         except:
             pass
 
-    def frame_izquierdo(self):
+    def frame_izquierdo(self):#botones/textos dentro del frame del lado izquierdo
 
         #declaramos Frames
         frame_left=Frame(self)
@@ -87,7 +96,7 @@ class Aplicacion(Tk):
 
 
 
-    def lista_comits(self,frame):
+    def lista_comits(self,frame):#Generamos la lista de los comits del repositorio seleccionado
         try:
             self.listbox = Listbox(frame, width=106, height=600)
             self.listbox.grid(row=1, column=0)
@@ -111,7 +120,7 @@ class Aplicacion(Tk):
         except:
             pass
 
-    def frame_derecho(self):
+    def frame_derecho(self):#Botones/textos dentro del frame del lado derecho
 
 
         frame_rigth=Frame(self)
