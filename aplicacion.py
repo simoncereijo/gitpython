@@ -25,7 +25,6 @@ class Aplicacion(Tk):
         label_directorio=Label(frame,text=filepath,width=40)
         label_directorio.grid(row=3,column=1)
         self.repo=My_git(filepath,user,email)
-
     def checkout_versio(self):
         elemento_selecciondo=self.listbox.curselection()
         elemento_selecciondo=elemento_selecciondo[0]

@@ -17,6 +17,7 @@ class My_git:
             valor = messagebox.askquestion("New Repo", "No existe repositorio en esta ruta, desea crear uno nuevo?")
             if valor == "yes":
                 Repo.init(path)
+                repo = Repo(path)
 
     def commit_add(self,comentario):
 
@@ -28,9 +29,10 @@ class My_git:
 
     def checkout_commit(self,commit_id):
         repo.git.checkout(commit_id)
-    def push_github(self,origen):
-        origin = repo.remote(name=origen)
-        origin.push()
+    def push_github(self,destino):
+
+        origin = repo.create_remote('origin', destino)
+        repo.git.push("--set-upstream", origin, repo.head.ref)
     def show_commits(self):
         commits = list(repo.iter_commits('master'))
         return commits
