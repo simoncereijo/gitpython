@@ -46,7 +46,7 @@ class Aplicacion(Tk):
         try:
             self.repo.commit_add(str(comentario))
             self.lista_comits(self.frame_rigth)
-            print(self.repo.show_commits())
+            
         except:
             pass
 
