@@ -46,7 +46,7 @@ class Aplicacion(Tk):
         try:
             self.repo.commit_add(str(comentario))
             self.lista_comits(self.frame_rigth)
-            
+
         except:
             pass
 
@@ -72,11 +72,13 @@ class Aplicacion(Tk):
         label_user.grid(row=1,column=0)
         entry_user=Entry(self.frame_left,width=40)
         entry_user.grid(row=1,column=1)
+        entry_user.insert(0, "simon")
         #Email
         label_email=Label(self.frame_left,text="Email:",width=10)
         label_email.grid(row=2,column=0)
         entry_email=Entry(self.frame_left,width=40)
         entry_email.grid(row=2,column=1)
+        entry_email.insert(0, "simon.cereijo@gmail.com")
         #ruta de la carpeta donde crear el repositorio
         boton_busqueda_cd=Button(self.frame_left,text="Archivo...",width=10,command=lambda :self.crear_label_directorio(self.frame_left,entry_user.get(),entry_email.get()))
         boton_busqueda_cd.grid(row=3,column=0)
@@ -85,6 +87,7 @@ class Aplicacion(Tk):
         separador.grid(row=5,column=0,columnspan=20)
         #comit repo
         entrada_commit=Entry(self.frame_left,width=48)
+        entrada_commit.insert(0, '"Comentario del commit"')
         entrada_commit.grid(row=6,column=0)
         boton_commit=Button(self.frame_left,text="Validar nuevo Commit",width=40,command=lambda :self.validar_commit(entrada_commit.get()))
         boton_commit.grid(row=7,column=0)
@@ -101,6 +104,7 @@ class Aplicacion(Tk):
         #push a github
         entrada_repo_github=Entry(self.frame_left,width=48)
         entrada_repo_github.grid(row=12,column=0)
+        entrada_repo_github.insert(0, '"URL Repositorio remoto"')
         boton_push=Button(self.frame_left,text="Push a Github",width=40,command=lambda :self.repo.push_github(entrada_repo_github.get()))
         boton_push.grid(row=13,column=0)
 

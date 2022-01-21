@@ -31,17 +31,19 @@ class My_git:
         repo.git.checkout(commit_id)
     def push_github(self,destino):
 
-        try:#Creamos un repositio remoto, hay que darle la opcion de seleccionarlo de la lista o crear uno nuevo, por ahora solo trabaja en mi repositorio
-            origin = repo.create_remote('origin', destino)
-            repo.git.push("--set-upstream", origin, repo.head.ref)
-        except:
-            repo.remotes.origin.push()
+        if destino!="URL Repositorio remoto":
+            try:  # Creamos un repositio remoto, hay que darle la opcion de seleccionarlo de la lista o crear uno nuevo, por ahora solo trabaja en mi repositorio
+                origin = repo.create_remote('origin', destino)
+                repo.git.push("--set-upstream", origin, repo.head.ref)
+            except:
+                repo.remotes.origin.push()
+
+                # En un futuro mostrar los remotes creados para poder seleccionarlos
+                # print('Remotes:')
+                # for remote in repo.remotes:
+                #    print(f'- {remote.name} {remote.url}')
 
 
-            #En un futuro mostrar los remotes creados para poder seleccionarlos
-            #print('Remotes:')
-            #for remote in repo.remotes:
-            #    print(f'- {remote.name} {remote.url}')
 
     def show_commits(self):
         commits = list(repo.iter_commits('master'))
