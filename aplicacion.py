@@ -36,6 +36,7 @@ class Aplicacion(Tk):
         label_directorio.grid(row=3,column=1)
         self.repo=My_git(filepath,user,email)
         self.listbox_remote_repo()
+        self.lista_comits(self.frame_rigth)
     def checkout_versio(self):#recumeramos el comit seleccionado de la lista
         elemento_selecciondo=self.listbox.curselection()
         elemento_selecciondo=elemento_selecciondo[0]
@@ -113,7 +114,7 @@ class Aplicacion(Tk):
         boton_busqueda_cd=Button(frame,text="Archivo...",width=10,command=lambda :self.crear_label_directorio(frame,entry_user.get(),entry_email.get()))
         boton_busqueda_cd.grid(row=3,column=0)
         #separador
-        separador=Label(frame,text="------------------------------------------------------------------------------------------------------------")
+        separador=Label(frame,text="---------------------------------------------COMMIT-----------------------------------------------------------")
         separador.grid(row=5,column=0,columnspan=20)
         #comit repo
         entrada_commit=Entry(frame,width=48)
@@ -122,14 +123,14 @@ class Aplicacion(Tk):
         boton_commit=Button(frame,text="Validar nuevo Commit",width=40,command=lambda :self.validar_commit(entrada_commit.get()))
         boton_commit.grid(row=7,column=0)
         #separador
-        separador=Label(frame,text="------------------------------------------------------------------------------------------------------------")
+        separador=Label(frame,text="---------------------------------------------CHECKOUT----------------------------------------------------------")
         separador.grid(row=8,column=0,columnspan=20)
         ##checkout repo
 
         boton_commit_checkout=Button(frame,text="Recuperar version",width=40,command=lambda :self.checkout_versio())
         boton_commit_checkout.grid(row=10,column=0)
         #separador
-        separador=Label(frame,text="------------------------------------------------------------------------------------------------------------")
+        separador=Label(frame,text="---------------------------------------------GITHUB----------------------------------------------------------")
         separador.grid(row=11,column=0,columnspan=20)
         #push a github
         self.entrada_repo_github=Entry(frame,width=48)
