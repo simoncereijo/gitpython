@@ -8,7 +8,7 @@ from clase_git import My_git
 #En las entradas de "User" y "Email" configuras la pesrona que ha hecho las modificaciones en el repositorio
 #Puedes validar un comit metiendo el comentario y pulsado validar
 #puedes recuperar un commit seleccionandolo de la lista de commits y pulsando checkout
-#Para generar la lista de commit debes estar dentro de una ruta con un repositorio creado y pulsar reflog
+
 
 
 #Errores:
