@@ -13,7 +13,7 @@ from clase_git import My_git
 
 #Errores:
 #-Cuando creo un repositio nuevo, tengo que volver a seleccionar la ruta para poder hacer commit
-#-a la hora de subir a github, esta pendiente mostrar la lista de repositioros remotos creados para poder Seleccionar/borrar/crear
+
 
 
 class Aplicacion(Tk):
