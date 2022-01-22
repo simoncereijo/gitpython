@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter import font
+from tkinter import messagebox
 from clase_git import My_git
 
 #Aplicacion para el uso de Git sin tener que utilizar la consola.
@@ -34,6 +35,7 @@ class Aplicacion(Tk):
         label_directorio=Label(frame,text=filepath,width=40)
         label_directorio.grid(row=3,column=1)
         self.repo=My_git(filepath,user,email)
+        self.listbox_remote_repo()
     def checkout_versio(self):#recumeramos el comit seleccionado de la lista
         elemento_selecciondo=self.listbox.curselection()
         elemento_selecciondo=elemento_selecciondo[0]
@@ -49,8 +51,99 @@ class Aplicacion(Tk):
 
         except:
             pass
+    def listbox_remote_repo(self):
+        self.listbox_remote = Listbox(self.frame_left, width=80, height=20)
+        self.listbox_remote.grid(row=14, column=0,columnspan=2)
+        self.listbox_remote.grid_propagate(0)
+
+        try:
+            self.remotes = self.repo.list_remotes()
+
+            j = 0
+            for remote in self.remotes:
+                item=(f'- {remote.name} {remote.url}')
+                self.listbox_remote.insert(j, item)
+                j += 1
+        except:
+            pass
+
+    def crear_remote(self):
+        self.nuevo_remote=self.repo.crear_remote(self.entrada_nombre_remote_repo.get(),self.entrada_repo_github.get())
+
+        self.listbox_remote_repo()
+
+    def borrar_remote(self):
+        self.remote_selecciondo=self.listbox_remote.curselection()
+        self.remote_selecciondo=self.remote_selecciondo[0]
+
+        self.repo.borrar_remote(self.remotes[self.remote_selecciondo].name)
+        self.listbox_remote_repo()
+
+    def push_remote(self):
+        try:
+            self.remote_selecciondo = self.listbox_remote.curselection()
+            self.remote_selecciondo = self.remote_selecciondo[0]
+            self.repo.push_github(self.remotes[self.remote_selecciondo].name)
+            messagebox.showinfo("Info", "Subido con exito")
+        except:
+            messagebox.showwarning("warning", "Fallo al Subir a gihub")
 
 
+    def widget_frame_left(self,frame):
+        #Encabezado
+        cabecera="CONFIGURACION DEL REPOSITORIO"
+        encabezado=Label(frame,text=cabecera,height=3,font=("Arial",15))
+        f = font.Font(encabezado, encabezado.cget("font"))
+        f.configure(underline=True)
+        encabezado.configure(font=f)
+        encabezado.grid(row=0,column=0,columnspan=2)
+        #Usuario
+        label_user=Label(frame,text="User:",width=10)
+        label_user.grid(row=1,column=0)
+        entry_user=Entry(frame,width=40)
+        entry_user.grid(row=1,column=1)
+        entry_user.insert(0, "simon")
+        #Email
+        label_email=Label(frame,text="Email:",width=10)
+        label_email.grid(row=2,column=0)
+        entry_email=Entry(frame,width=40)
+        entry_email.grid(row=2,column=1)
+        entry_email.insert(0, "simon.cereijo@gmail.com")
+        #ruta de la carpeta donde crear el repositorio
+        boton_busqueda_cd=Button(frame,text="Archivo...",width=10,command=lambda :self.crear_label_directorio(frame,entry_user.get(),entry_email.get()))
+        boton_busqueda_cd.grid(row=3,column=0)
+        #separador
+        separador=Label(frame,text="------------------------------------------------------------------------------------------------------------")
+        separador.grid(row=5,column=0,columnspan=20)
+        #comit repo
+        entrada_commit=Entry(frame,width=48)
+        entrada_commit.insert(0, '"Comentario del commit"')
+        entrada_commit.grid(row=6,column=0)
+        boton_commit=Button(frame,text="Validar nuevo Commit",width=40,command=lambda :self.validar_commit(entrada_commit.get()))
+        boton_commit.grid(row=7,column=0)
+        #separador
+        separador=Label(frame,text="------------------------------------------------------------------------------------------------------------")
+        separador.grid(row=8,column=0,columnspan=20)
+        ##checkout repo
+
+        boton_commit_checkout=Button(frame,text="Recuperar version",width=40,command=lambda :self.checkout_versio())
+        boton_commit_checkout.grid(row=10,column=0)
+        #separador
+        separador=Label(frame,text="------------------------------------------------------------------------------------------------------------")
+        separador.grid(row=11,column=0,columnspan=20)
+        #push a github
+        self.entrada_repo_github=Entry(frame,width=48)
+        self.entrada_repo_github.grid(row=12,column=0)
+        self.entrada_repo_github.insert(0, '"URL Repositorio remoto"')
+        self.entrada_nombre_remote_repo=Entry(frame,width=48)
+        self.entrada_nombre_remote_repo.grid(row=12,column=1)
+        self.entrada_nombre_remote_repo.insert(0, '"Nombre Remote Repo"')
+        boton_crear_remote_repo=Button(frame,text="Crear",width=40,command=lambda :self.crear_remote())
+        boton_crear_remote_repo.grid(row=13,column=0)
+        boton_borar_remote_repo=Button(frame,text="Borrar",width=40,command=lambda :self.borrar_remote())
+        boton_borar_remote_repo.grid(row=13,column=1)
+        boton_push=Button(frame,text="Push a Github",width=80,command=lambda :self.push_remote())
+        boton_push.grid(row=15,column=0,columnspan=2)
 
     def frame_izquierdo(self):#botones/textos dentro del frame del lado izquierdo
 
@@ -59,55 +152,8 @@ class Aplicacion(Tk):
         self.frame_left.config(width=1200/2, height=710,relief="sunken",bd=1)
         self.frame_left.grid(row=0,column=0)
         self.frame_left.grid_propagate(0)
-
-        #Encabezado
-        cabecera="CONFIGURACION DEL REPOSITORIO"
-        encabezado=Label(self.frame_left,text=cabecera,height=3,font=("Arial",15))
-        f = font.Font(encabezado, encabezado.cget("font"))
-        f.configure(underline=True)
-        encabezado.configure(font=f)
-        encabezado.grid(row=0,column=0,columnspan=2)
-        #Usuario
-        label_user=Label(self.frame_left,text="User:",width=10)
-        label_user.grid(row=1,column=0)
-        entry_user=Entry(self.frame_left,width=40)
-        entry_user.grid(row=1,column=1)
-        entry_user.insert(0, "simon")
-        #Email
-        label_email=Label(self.frame_left,text="Email:",width=10)
-        label_email.grid(row=2,column=0)
-        entry_email=Entry(self.frame_left,width=40)
-        entry_email.grid(row=2,column=1)
-        entry_email.insert(0, "simon.cereijo@gmail.com")
-        #ruta de la carpeta donde crear el repositorio
-        boton_busqueda_cd=Button(self.frame_left,text="Archivo...",width=10,command=lambda :self.crear_label_directorio(self.frame_left,entry_user.get(),entry_email.get()))
-        boton_busqueda_cd.grid(row=3,column=0)
-        #separador
-        separador=Label(self.frame_left,text="------------------------------------------------------------------------------------------------------------")
-        separador.grid(row=5,column=0,columnspan=20)
-        #comit repo
-        entrada_commit=Entry(self.frame_left,width=48)
-        entrada_commit.insert(0, '"Comentario del commit"')
-        entrada_commit.grid(row=6,column=0)
-        boton_commit=Button(self.frame_left,text="Validar nuevo Commit",width=40,command=lambda :self.validar_commit(entrada_commit.get()))
-        boton_commit.grid(row=7,column=0)
-        #separador
-        separador=Label(self.frame_left,text="------------------------------------------------------------------------------------------------------------")
-        separador.grid(row=8,column=0,columnspan=20)
-        ##checkout repo
-
-        boton_commit_checkout=Button(self.frame_left,text="Recuperar version",width=40,command=lambda :self.checkout_versio())
-        boton_commit_checkout.grid(row=10,column=0)
-        #separador
-        separador=Label(self.frame_left,text="------------------------------------------------------------------------------------------------------------")
-        separador.grid(row=11,column=0,columnspan=20)
-        #push a github
-        entrada_repo_github=Entry(self.frame_left,width=48)
-        entrada_repo_github.grid(row=12,column=0)
-        entrada_repo_github.insert(0, '"URL Repositorio remoto"')
-        boton_push=Button(self.frame_left,text="Push a Github",width=40,command=lambda :self.repo.push_github(entrada_repo_github.get()))
-        boton_push.grid(row=13,column=0)
-
+        self.widget_frame_left(self.frame_left)
+        self.listbox_remote_repo()
 
 
     def lista_comits(self,frame):#Generamos la lista de los comits del repositorio seleccionado
@@ -119,8 +165,13 @@ class Aplicacion(Tk):
             j = 0
             lista_commits = ["" for x in range(len(self.commits))]
             for commit in self.commits:
-                item = ("{}---{}---by---{}---({})".format(commit.hexsha, commit.summary,
-                                                          commit.author.name, commit.author.email))
+                if commit=="--MASTER--":
+                    item=commit
+                elif commit=="--HEAD--":
+                    item=commit
+                else:
+                    item = ("{}---{}---by---{}---({})".format(commit.hexsha, commit.summary,
+                                                              commit.author.name, commit.author.email))
 
                 lista_commits[j] = item
                 j += 1

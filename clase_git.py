@@ -29,31 +29,28 @@ class My_git:
 
     def checkout_commit(self,commit_id):#volver a un commit seleccionamos
         repo.git.checkout(commit_id)
-    def push_github(self,destino):
-
-        if destino!="URL Repositorio remoto":
-            try:  # Creamos un repositio remoto, hay que darle la opcion de seleccionarlo de la lista o crear uno nuevo, por ahora solo trabaja en mi repositorio
-                origin = repo.create_remote('origin', destino)
-                repo.git.push("--set-upstream", origin, repo.head.ref)
+    def push_github(self,remote):
+            try:
+                repo.git.push("--set-upstream", remote, repo.head.ref)
             except:
-                repo.remotes.origin.push()
+                repo.remotes.remote.push()
 
-                # En un futuro mostrar los remotes creados para poder seleccionarlos
-                # print('Remotes:')
-                # for remote in repo.remotes:
-                #    print(f'- {remote.name} {remote.url}')
+    def list_remotes(self):
+            return repo.remotes
 
+    def crear_remote(self,name,url):
+        try:
+            return repo.create_remote(name, url)
+        except:
+            messagebox.showwarning("warning", "Fallo al crear remote")
 
+    def borrar_remote(self,name):
+        try:
+            repo.delete_remote(name)
+        except:
+            messagebox.showwarning("warning", "Fallo al borrar remote")
 
     def show_commits(self):
-        commits = list(repo.iter_commits('master'))
+        commits = ["--MASTER--"]+list(repo.iter_commits('master'))+["--HEAD--"]+list(repo.iter_commits('HEAD'))
         return commits
         lista_commits = [""for x in range(len(commits))]
-        j=0
-        for commit in commits:
-            item = ("{}---{}---by---{}---({})".format(commit.hexsha, commit.summary,
-                                                                           commit.author.name, commit.author.email))
-
-            lista_commits[j]=item
-            j+=1
-        return lista_commits
