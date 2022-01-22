@@ -9,7 +9,7 @@ from clase_git import My_git
 #Puedes validar un comit metiendo el comentario y pulsado validar
 #puedes recuperar un commit seleccionandolo de la lista de commits y pulsando checkout
 #Para generar la lista de commit debes estar dentro de una ruta con un repositorio creado y pulsar reflog
-#si quieres sibir el repositio a github puedes introducir la url y pulsar subir a github
+
 
 #Errores:
 #-Cuando creo un repositio nuevo, tengo que volver a seleccionar la ruta para poder hacer commit
