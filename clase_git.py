@@ -30,10 +30,13 @@ class My_git:
     def checkout_commit(self,commit_id):#volver a un commit seleccionamos
         repo.git.checkout(commit_id)
     def push_github(self,remote):
+
             try:
-                repo.git.push("--set-upstream", remote, repo.head.ref)
-            except:
                 repo.remotes.remote.push()
+
+            except:
+
+                repo.git.push("--set-upstream", remote, repo.head.ref)
 
     def list_remotes(self):
             return repo.remotes
