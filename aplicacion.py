@@ -87,7 +87,7 @@ class Aplicacion(Tk):
             self.repo.push_github(self.remotes[self.remote_selecciondo].name)
             messagebox.showinfo("Info", "Subido con exito")
         except:
-            messagebox.showwarning("warning", "Fallo al Subir a gihub")
+            messagebox.showwarning("warning", "Fallo al Subir a gihub\n1-Mal escrita la URL\n2-Modificado el remoto y es necesario un pull")
 
 
     def widget_frame_left(self,frame):
