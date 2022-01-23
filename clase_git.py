@@ -25,7 +25,7 @@ class My_git:
             repo.git.add(all=True)
             repo.git.commit('-m', comentario)
         except:
-            messagebox.showwarning("warning", "Ningun cambio a comitear\n Vuelve a seleccionar la carpeta")
+            messagebox.showwarning("warning", "Ningun cambio a comitear\n Vuelve a seleccionar la carpeta.")
 
     def checkout_commit(self,commit_id):#volver a un commit seleccionamos
         repo.git.checkout(commit_id)
